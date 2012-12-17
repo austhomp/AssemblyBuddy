@@ -9,7 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBuddy.Core", "Assem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBuddy.Console", "AssemblyBuddy.Console\AssemblyBuddy.Console.csproj", "{D17D1926-9EEC-4D63-8F5E-67BD18BE9274}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBuddy.Core.Tests", "AssemblyBuddy.Core.Tests\AssemblyBuddy.Core.Tests.csproj", "{07DE0707-9B08-48B0-8325-EB511728FC57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1AF11EF0-7D81-4798-9BE6-37D06958EAEE}"
+	ProjectSection(SolutionItems) = preProject
+		AssemblyBuddy.vsmdi = AssemblyBuddy.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = AssemblyBuddy.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -59,6 +71,16 @@ Global
 		{D17D1926-9EEC-4D63-8F5E-67BD18BE9274}.Release|Mixed Platforms.Build.0 = Release|x86
 		{D17D1926-9EEC-4D63-8F5E-67BD18BE9274}.Release|x86.ActiveCfg = Release|x86
 		{D17D1926-9EEC-4D63-8F5E-67BD18BE9274}.Release|x86.Build.0 = Release|x86
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

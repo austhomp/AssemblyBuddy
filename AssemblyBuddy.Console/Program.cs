@@ -9,6 +9,7 @@ namespace AssemblyBuddy.Console
     {
         static void Main(string[] args)
         {
+            System.Console.WriteLine("Nothing here yet");
         }
     }
 }
