@@ -40,9 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IAssemblySynchronizer.cs" />
+    <Compile Include="FileComparisonResult.cs" />
+    <Compile Include="FileMatch.cs" />
+    <Compile Include="IUpdatedAssemblyFinder.cs" />
+    <Compile Include="ICopier.cs" />
+    <Compile Include="IFileComparer.cs" />
     <Compile Include="IFileEntry.cs" />
     <Compile Include="IFolder.cs" />
+    <Compile Include="IFolderComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
