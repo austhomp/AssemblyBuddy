@@ -18,9 +18,9 @@ namespace AssemblyBuddy.Core.Tests
         {
             var target = GetUpdatedAssemblyFinder();
             IFileSystem source = null;
-            var target1 = new Mock<IFileSystem>();
+            var destination = new Mock<IFileSystem>();
 
-            target.FindUpdatedAssemblies(source, target1.Object);
+            target.FindUpdatedAssemblies(source, destination.Object);
         }
 
         [TestMethod()]
@@ -29,9 +29,9 @@ namespace AssemblyBuddy.Core.Tests
         {
             var target = GetUpdatedAssemblyFinder();
             var source = new Mock<IFileSystem>();
-            IFileSystem target1 = null;
+            IFileSystem destination = null;
 
-            target.FindUpdatedAssemblies(source.Object, target1);
+            target.FindUpdatedAssemblies(source.Object, destination);
         }
 
         [TestMethod()]
@@ -52,9 +52,9 @@ namespace AssemblyBuddy.Core.Tests
                     "four"
                 };
 
-            var target1 = GetMockFolder(destinationFiles);
+            var destination = GetMockFolder(destinationFiles);
             
-            var result = target.FindUpdatedAssemblies(source, target1);
+            var result = target.FindUpdatedAssemblies(source, destination);
             Assert.IsTrue(result.Count == 0);
         }
 
@@ -72,9 +72,9 @@ namespace AssemblyBuddy.Core.Tests
 
             var destinationFiles = new List<string>();
 
-            var target1 = GetMockFolder(destinationFiles);
+            var destination = GetMockFolder(destinationFiles);
             
-            var result = target.FindUpdatedAssemblies(source, target1);
+            var result = target.FindUpdatedAssemblies(source, destination);
             Assert.IsTrue(result.Count == 0);
         }
         
@@ -93,9 +93,9 @@ namespace AssemblyBuddy.Core.Tests
                     "four"
                 };
 
-            var target1 = GetMockFolder(destinationFiles);
+            var destination = GetMockFolder(destinationFiles);
             
-            var result = target.FindUpdatedAssemblies(source, target1);
+            var result = target.FindUpdatedAssemblies(source, destination);
             Assert.IsTrue(result.Count == 0);
         }
 
@@ -117,9 +117,9 @@ namespace AssemblyBuddy.Core.Tests
                     "four"
                 };
 
-            var target1 = GetMockFolder(destinationFiles);
+            var destination = GetMockFolder(destinationFiles);
 
-            var result = target.FindUpdatedAssemblies(source, target1);
+            var result = target.FindUpdatedAssemblies(source, destination);
             Assert.IsTrue(result.Count == 0);
         }
 
@@ -141,9 +141,9 @@ namespace AssemblyBuddy.Core.Tests
                     "four"
                 };
 
-            var target1 = GetMockFolder(destinationFiles);
+            var destination = GetMockFolder(destinationFiles);
 
-            var result = target.FindUpdatedAssemblies(source, target1);
+            var result = target.FindUpdatedAssemblies(source, destination);
             Assert.IsTrue(result.Count == 1);
             Assert.AreEqual(sourceFiles[0], result[0].SourceFile.Filename);
         }
