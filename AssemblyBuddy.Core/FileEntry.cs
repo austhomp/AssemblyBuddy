@@ -4,7 +4,7 @@ namespace AssemblyBuddy.Core
 
     using AssemblyBuddy.Interfaces;
 
-    public class FileEntry : IFileEntry
+    internal class FileEntry : IFileEntry
     {
         private readonly string filePath;
 

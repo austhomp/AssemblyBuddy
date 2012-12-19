@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using AssemblyBuddy.Interfaces;
 
-    public class Folder : IFolder
+    internal class Folder : IFolder
     {
         private readonly string path;
 

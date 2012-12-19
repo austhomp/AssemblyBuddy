@@ -49,7 +49,7 @@ namespace AssemblyBuddy.Core.Tests
             var destinationFiles = new List<string>()
                 {
                     "three",
-                    "foure"
+                    "four"
                 };
 
             var target1 = GetMockFolder(destinationFiles);
@@ -58,9 +58,100 @@ namespace AssemblyBuddy.Core.Tests
             Assert.IsTrue(result.Count == 0);
         }
 
+        [TestMethod()]
+        public void WhenTargetIsEmpty_NoMatchesAreReturned()
+        {
+            var target = GetUpdatedAssemblyFinder();
+
+            var sourceFiles = new List<string>()
+                {
+                    "one",
+                    "two"
+                };
+            var source = GetMockFolder(sourceFiles);
+
+            var destinationFiles = new List<string>();
+
+            var target1 = GetMockFolder(destinationFiles);
+            
+            var result = target.FindUpdatedAssemblies(source, target1);
+            Assert.IsTrue(result.Count == 0);
+        }
+        
+        [TestMethod()]
+        public void WhenSourceIsEmpty_NoMatchesAreReturned()
+        {
+            var target = GetUpdatedAssemblyFinder();
+
+            var sourceFiles = new List<string>();
+
+            var source = GetMockFolder(sourceFiles);
+
+            var destinationFiles = new List<string>()
+                {
+                    "three",
+                    "four"
+                };
+
+            var target1 = GetMockFolder(destinationFiles);
+            
+            var result = target.FindUpdatedAssemblies(source, target1);
+            Assert.IsTrue(result.Count == 0);
+        }
+
+        [TestMethod()]
+        public void WhenTargetAndSourceHaveFilesInCommonThatDoNotDiffer_NoMatchesAreReturned()
+        {
+            var target = GetUpdatedAssemblyFinder();
+
+            var sourceFiles = new List<string>()
+                {
+                    "one",
+                    "two"
+                };
+            var source = GetMockFolder(sourceFiles);
+
+            var destinationFiles = new List<string>()
+                {
+                    "one",
+                    "four"
+                };
+
+            var target1 = GetMockFolder(destinationFiles);
+
+            var result = target.FindUpdatedAssemblies(source, target1);
+            Assert.IsTrue(result.Count == 0);
+        }
+
+        [TestMethod()]
+        public void WhenTargetAndSourceHaveFilesInCommonThatDiffer_CorrectMatchesAreReturned()
+        {
+            var target = GetUpdatedAssemblyFinder(true);
+
+            var sourceFiles = new List<string>()
+                {
+                    "one",
+                    "two"
+                };
+            var source = GetMockFolder(sourceFiles);
+
+            var destinationFiles = new List<string>()
+                {
+                    "one",
+                    "four"
+                };
+
+            var target1 = GetMockFolder(destinationFiles);
+
+            var result = target.FindUpdatedAssemblies(source, target1);
+            Assert.IsTrue(result.Count == 1);
+            Assert.AreEqual(sourceFiles[0], result[0].SourceFile.Filename);
+        }
+
+
         #region Heper Methods
 
-        private static IFolder GetMockFolder(IList<string> filesToReturn)
+        private static IFolder GetMockFolder(IEnumerable<string> filesToReturn)
         {
             var fileList = new List<IFileEntry>();
             foreach (var file in filesToReturn)
@@ -79,15 +170,15 @@ namespace AssemblyBuddy.Core.Tests
         }
 
 
-        private static UpdatedAssemblyFinder GetUpdatedAssemblyFinder()
+        private static UpdatedAssemblyFinder GetUpdatedAssemblyFinder(bool matchesShouldDiffer = false)
         {
-            var folderComparer = new Mock<IFolderComparer>();
-            folderComparer.Setup(x => x.FindMatches(It.IsAny<IFolder>(), It.IsAny<IFolder>())).Returns(
-                new List<FileMatch>());
+            var folderComparer = new FolderComparer();
             var fileComparer = new Mock<IFileComparer>();
+            var fileComparisonResult = matchesShouldDiffer ? FileComparisonResult.Differ : FileComparisonResult.Match;
             fileComparer.Setup(x => x.Compare(It.IsAny<IFileEntry>(), It.IsAny<IFileEntry>())).Returns(
-                FileComparisonResult.Differ);
-            return new UpdatedAssemblyFinder(folderComparer.Object, fileComparer.Object);
+                fileComparisonResult);
+
+            return new UpdatedAssemblyFinder(folderComparer, fileComparer.Object);
         }
 
         #endregion
