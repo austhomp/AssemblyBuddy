@@ -17,8 +17,8 @@ namespace AssemblyBuddy.Core.Tests
         public void WhenSourceIsNull_ExceptionIsThrown()
         {
             var target = GetUpdatedAssemblyFinder();
-            IFolder source = null;
-            var target1 = new Mock<IFolder>();
+            IFileSystem source = null;
+            var target1 = new Mock<IFileSystem>();
 
             target.FindUpdatedAssemblies(source, target1.Object);
         }
@@ -28,8 +28,8 @@ namespace AssemblyBuddy.Core.Tests
         public void WhenTargetIsNull_ExceptionIsThrown()
         {
             var target = GetUpdatedAssemblyFinder();
-            var source = new Mock<IFolder>();
-            IFolder target1 = null;
+            var source = new Mock<IFileSystem>();
+            IFileSystem target1 = null;
 
             target.FindUpdatedAssemblies(source.Object, target1);
         }
@@ -151,7 +151,7 @@ namespace AssemblyBuddy.Core.Tests
 
         #region Heper Methods
 
-        private static IFolder GetMockFolder(IEnumerable<string> filesToReturn)
+        private static IFileSystem GetMockFolder(IEnumerable<string> filesToReturn)
         {
             var fileList = new List<IFileEntry>();
             foreach (var file in filesToReturn)
@@ -166,7 +166,11 @@ namespace AssemblyBuddy.Core.Tests
             var folder = new Mock<IFolder>();
             folder.Setup(x => x.Files).Returns(() => fileList);
             folder.Setup(x => x.Path).Returns("//mocked");
-            return folder.Object;
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.Setup(x => x.Folder).Returns(() => folder.Object);
+            ////fileSystem.Setup(x => x.GetFileSystemFile(It.IsAny<IFileEntry>())).Returns(null);
+
+            return fileSystem.Object;
         }
 
 
@@ -175,8 +179,8 @@ namespace AssemblyBuddy.Core.Tests
             var folderComparer = new FolderComparer();
             var fileComparer = new Mock<IFileComparer>();
             var fileComparisonResult = matchesShouldDiffer ? FileComparisonResult.Differ : FileComparisonResult.Match;
-            fileComparer.Setup(x => x.Compare(It.IsAny<IFileEntry>(), It.IsAny<IFileEntry>())).Returns(
-                fileComparisonResult);
+            fileComparer.Setup(x => x.Compare(It.IsAny<IFileSystemFile>(), It.IsAny<IFileSystemFile>()))
+                .Returns(fileComparisonResult);
 
             return new UpdatedAssemblyFinder(folderComparer, fileComparer.Object);
         }

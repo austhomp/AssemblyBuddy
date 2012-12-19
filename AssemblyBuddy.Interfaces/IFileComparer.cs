@@ -2,6 +2,6 @@
 {
     public interface IFileComparer
     {
-        FileComparisonResult Compare(IFileEntry source, IFileEntry destination);
+        FileComparisonResult Compare(IFileSystemFile source, IFileSystemFile destination);
     }
 }

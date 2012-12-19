@@ -17,7 +17,7 @@
             this.fileComparer = fileComparer;
         }
 
-        public List<FileMatch> FindUpdatedAssemblies(IFolder source, IFolder target)
+        public List<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem target)
         {
             if (source == null)
             {
@@ -29,12 +29,14 @@
                 throw new ArgumentNullException("target");
             }
             
-            var potentialMatches = this.folderComparer.FindMatches(source, target);
+            var potentialMatches = this.folderComparer.FindMatches(source.Folder, target.Folder);
             var matches = new List<FileMatch>(potentialMatches.Count);
             
             foreach (var potentialMatch in potentialMatches)
             {
-                if (FileComparisonResult.Differ == this.fileComparer.Compare(potentialMatch.SourceFile, potentialMatch.DestinationFile))
+                var sourceFile = source.GetFileSystemFile(potentialMatch.SourceFile);
+                var destinationFile = target.GetFileSystemFile(potentialMatch.DestinationFile);
+                if (FileComparisonResult.Differ == this.fileComparer.Compare(sourceFile, destinationFile))
                 {
                     matches.Add(new FileMatch(potentialMatch.SourceFile, potentialMatch.DestinationFile));
                 }
