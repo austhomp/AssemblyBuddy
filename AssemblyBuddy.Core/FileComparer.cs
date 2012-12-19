@@ -18,9 +18,7 @@
                 return FileComparisonResult.Differ;
             }
 
-            return source.ComputeHash(this.hashStrategy) != destination.ComputeHash(this.hashStrategy)
-                       ? FileComparisonResult.Differ
-                       : FileComparisonResult.Match;
+            return source.CompareWith(destination, this.hashStrategy);
         }
     }
 }

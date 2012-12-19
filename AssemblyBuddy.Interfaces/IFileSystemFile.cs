@@ -1,9 +1,13 @@
 namespace AssemblyBuddy.Interfaces
 {
+    using System.IO;
+
     public interface IFileSystemFile
     {
         ulong Size { get; }
 
-        string ComputeHash(IHashStrategy hashStrategy);
+        Stream GetStream();
+
+        FileComparisonResult CompareWith(IFileSystemFile other, IHashStrategy hashStrategy);
     }
 }
