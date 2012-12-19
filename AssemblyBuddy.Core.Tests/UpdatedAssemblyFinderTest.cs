@@ -25,7 +25,7 @@ namespace AssemblyBuddy.Core.Tests
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void WhenTargetIsNull_ExceptionIsThrown()
+        public void WhenDestinationIsNull_ExceptionIsThrown()
         {
             var target = GetUpdatedAssemblyFinder();
             var source = new Mock<IFileSystem>();
@@ -35,7 +35,7 @@ namespace AssemblyBuddy.Core.Tests
         }
 
         [TestMethod()]
-        public void WhenTargetAndSourceHaveNoFilesInCommon_NoMatchesAreReturned()
+        public void WhenDestinationAndSourceHaveNoFilesInCommon_NoMatchesAreReturned()
         {
             var target = GetUpdatedAssemblyFinder();
 
@@ -59,7 +59,7 @@ namespace AssemblyBuddy.Core.Tests
         }
 
         [TestMethod()]
-        public void WhenTargetIsEmpty_NoMatchesAreReturned()
+        public void WhenDestinationIsEmpty_NoMatchesAreReturned()
         {
             var target = GetUpdatedAssemblyFinder();
 
@@ -100,7 +100,7 @@ namespace AssemblyBuddy.Core.Tests
         }
 
         [TestMethod()]
-        public void WhenTargetAndSourceHaveFilesInCommonThatDoNotDiffer_NoMatchesAreReturned()
+        public void WhenDestinationAndSourceHaveFilesInCommonThatDoNotDiffer_NoMatchesAreReturned()
         {
             var target = GetUpdatedAssemblyFinder();
 
@@ -124,7 +124,7 @@ namespace AssemblyBuddy.Core.Tests
         }
 
         [TestMethod()]
-        public void WhenTargetAndSourceHaveFilesInCommonThatDiffer_CorrectMatchesAreReturned()
+        public void WhenDestinationAndSourceHaveFilesInCommonThatDiffer_CorrectMatchesAreReturned()
         {
             var target = GetUpdatedAssemblyFinder(true);
 
