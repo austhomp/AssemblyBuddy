@@ -10,6 +10,8 @@ namespace AssemblyBuddy.Core.Tests
 
     using Moq;
 
+    using System.Linq;
+
     [TestClass()]
     public class UpdatedAssemblyFinderTest
     {
@@ -40,17 +42,17 @@ namespace AssemblyBuddy.Core.Tests
         {
             var target = GetUpdatedAssemblyFinder();
 
-            var sourceFiles = new List<string>()
+            var sourceFiles = new List<FakeFileEntry>()
                 {
-                    "one",
-                    "two"
+                    new FakeFileEntry() { Filename = "one", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "two", FileContents = "SAME"},
                 };
             var source = GetMockFolder(sourceFiles);
 
-            var destinationFiles = new List<string>()
+            var destinationFiles = new List<FakeFileEntry>()
                 {
-                    "three",
-                    "four"
+                    new FakeFileEntry() { Filename = "three", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "four", FileContents = "SAME"},
                 };
 
             var destination = GetMockFolder(destinationFiles);
@@ -64,14 +66,14 @@ namespace AssemblyBuddy.Core.Tests
         {
             var target = GetUpdatedAssemblyFinder();
 
-            var sourceFiles = new List<string>()
+            var sourceFiles = new List<FakeFileEntry>()
                 {
-                    "one",
-                    "two"
+                    new FakeFileEntry() { Filename = "one", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "two", FileContents = "SAME"},
                 };
             var source = GetMockFolder(sourceFiles);
 
-            var destinationFiles = new List<string>();
+            var destinationFiles = new List<FakeFileEntry>();
 
             var destination = GetMockFolder(destinationFiles);
             
@@ -84,14 +86,14 @@ namespace AssemblyBuddy.Core.Tests
         {
             var target = GetUpdatedAssemblyFinder();
 
-            var sourceFiles = new List<string>();
+            var sourceFiles = new List<FakeFileEntry>();
 
             var source = GetMockFolder(sourceFiles);
 
-            var destinationFiles = new List<string>()
+            var destinationFiles = new List<FakeFileEntry>()
                 {
-                    "three",
-                    "four"
+                    new FakeFileEntry() { Filename = "three", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "four", FileContents = "SAME"},
                 };
 
             var destination = GetMockFolder(destinationFiles);
@@ -105,17 +107,17 @@ namespace AssemblyBuddy.Core.Tests
         {
             var target = GetUpdatedAssemblyFinder();
 
-            var sourceFiles = new List<string>()
+            var sourceFiles = new List<FakeFileEntry>()
                 {
-                    "one",
-                    "two"
+                    new FakeFileEntry() { Filename = "one", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "two", FileContents = "SAME"},
                 };
             var source = GetMockFolder(sourceFiles);
 
-            var destinationFiles = new List<string>()
+            var destinationFiles = new List<FakeFileEntry>()
                 {
-                    "one",
-                    "four"
+                    new FakeFileEntry() { Filename = "one", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "four", FileContents = "SAME"},
                 };
 
             var destination = GetMockFolder(destinationFiles);
@@ -127,38 +129,38 @@ namespace AssemblyBuddy.Core.Tests
         [TestMethod()]
         public void WhenDestinationAndSourceHaveFilesInCommonThatDiffer_CorrectMatchesAreReturned()
         {
-            var target = GetUpdatedAssemblyFinder(true);
+            var target = GetUpdatedAssemblyFinder();
 
-            var sourceFiles = new List<string>()
+            var sourceFiles = new List<FakeFileEntry>()
                 {
-                    "one",
-                    "two"
+                    new FakeFileEntry() { Filename = "one", FileContents = "SAME"},
+                    new FakeFileEntry() { Filename = "two", FileContents = "SAME"},
                 };
             var source = GetMockFolder(sourceFiles);
 
-            var destinationFiles = new List<string>()
+            var destinationFiles = new List<FakeFileEntry>()
                 {
-                    "one",
-                    "four"
+                    new FakeFileEntry() { Filename = "one", FileContents = "DIFFERENT"},
+                    new FakeFileEntry() { Filename = "four", FileContents = "SAME"},
                 };
 
             var destination = GetMockFolder(destinationFiles);
 
             var result = target.FindUpdatedAssemblies(source, destination);
             Assert.IsTrue(result.Count == 1);
-            Assert.AreEqual(sourceFiles[0], result[0].SourceFile.Filename);
+            Assert.AreEqual(sourceFiles[0].Filename, result[0].SourceFile.Filename);
         }
 
 
         #region Heper Methods
 
-        private static IFileSystem GetMockFolder(IEnumerable<string> filesToReturn)
+        private static IFileSystem GetMockFolder(IList<FakeFileEntry> filesToReturn)
         {
             var fileList = new List<IFileEntry>();
             foreach (var file in filesToReturn)
             {
                 var m = new Mock<IFileEntry>();
-                var val = file;
+                var val = file.Filename;
                 m.Setup(x => x.Filename).Returns(() => val);
                 m.Setup(x => x.FilePath).Returns(string.Empty);
                 fileList.Add(m.Object);
@@ -169,23 +171,47 @@ namespace AssemblyBuddy.Core.Tests
             folder.Setup(x => x.Path).Returns("//mocked");
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.Setup(x => x.Folder).Returns(() => folder.Object);
-            ////fileSystem.Setup(x => x.GetFileSystemFile(It.IsAny<IFileEntry>())).Returns(null);
+
+            foreach (var fileEntry in fileList)
+            {
+                var fileSystemFile = new Mock<IFileSystemFile>();
+                var copyOfFileEntry = fileEntry;
+                fileSystemFile.Setup(x => x.FileEntry).Returns(copyOfFileEntry);
+                fileSystemFile.Setup(x => x.GetStream()).Returns(() =>
+                    {
+                        var memoryStream = new MemoryStream();
+                        foreach (var character in filesToReturn.First(x => x.Filename == copyOfFileEntry.Filename).FileContents.ToArray())
+                        {
+                            memoryStream.WriteByte((byte)character);
+                        }
+                        memoryStream.Position = 0;
+                        return memoryStream;
+                    });
+
+                fileSystem.Setup(x => x.GetFileSystemFile(copyOfFileEntry)).Returns(() => fileSystemFile.Object );
+                
+            }
 
             return fileSystem.Object;
         }
 
 
-        private static UpdatedAssemblyFinder GetUpdatedAssemblyFinder(bool shouldDiffer = false)
+        private static UpdatedAssemblyFinder GetUpdatedAssemblyFinder()
         {
-            var comparisonResult = shouldDiffer ? FileComparisonResult.Differ : FileComparisonResult.Match;
             var folderComparer = new FolderComparer();
-            var comparisonStrategy = new Mock<IComparisonStrategy>();
-            comparisonStrategy.Setup(x => x.Compare(It.IsAny<IFileSystemFile>(), It.IsAny<IFileSystemFile>())).Returns(comparisonResult);
-            var fileComparer = new FileComparer(comparisonStrategy.Object);
+            var comparisonStrategy = new DefaultComparisonStrategy();
+            var fileComparer = new FileComparer(comparisonStrategy);
 
             return new UpdatedAssemblyFinder(folderComparer, fileComparer);
         }
 
         #endregion
+
+        private class FakeFileEntry
+        {
+            public string Filename { get; set; }
+
+            public string FileContents { get; set; }
+        }
     }
 }
