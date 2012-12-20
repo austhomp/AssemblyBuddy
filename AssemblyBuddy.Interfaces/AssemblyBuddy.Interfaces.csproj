@@ -44,7 +44,7 @@
     <Compile Include="FileMatch.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IFileSystemFile.cs" />
-    <Compile Include="IHashStrategy.cs" />
+    <Compile Include="IComparisonStrategy.cs" />
     <Compile Include="IUpdatedAssemblyFinder.cs" />
     <Compile Include="ICopier.cs" />
     <Compile Include="IFileComparer.cs" />

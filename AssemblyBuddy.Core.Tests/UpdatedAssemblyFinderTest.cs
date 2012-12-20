@@ -127,7 +127,7 @@ namespace AssemblyBuddy.Core.Tests
         [TestMethod()]
         public void WhenDestinationAndSourceHaveFilesInCommonThatDiffer_CorrectMatchesAreReturned()
         {
-            var target = GetUpdatedAssemblyFinder();
+            var target = GetUpdatedAssemblyFinder(true);
 
             var sourceFiles = new List<string>()
                 {
@@ -175,12 +175,13 @@ namespace AssemblyBuddy.Core.Tests
         }
 
 
-        private static UpdatedAssemblyFinder GetUpdatedAssemblyFinder()
+        private static UpdatedAssemblyFinder GetUpdatedAssemblyFinder(bool shouldDiffer = false)
         {
+            var comparisonResult = shouldDiffer ? FileComparisonResult.Differ : FileComparisonResult.Match;
             var folderComparer = new FolderComparer();
-            var hashStrategy = new Mock<IHashStrategy>();
-            hashStrategy.Setup(x => x.HashStream(It.IsAny<Stream>())).Returns(string.Empty);
-            var fileComparer = new FileComparer(hashStrategy.Object);
+            var comparisonStrategy = new Mock<IComparisonStrategy>();
+            comparisonStrategy.Setup(x => x.Compare(It.IsAny<IFileSystemFile>(), It.IsAny<IFileSystemFile>())).Returns(comparisonResult);
+            var fileComparer = new FileComparer(comparisonStrategy.Object);
 
             return new UpdatedAssemblyFinder(folderComparer, fileComparer);
         }

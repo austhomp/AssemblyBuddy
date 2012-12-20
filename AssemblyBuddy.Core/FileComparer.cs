@@ -4,21 +4,16 @@
 
     internal class FileComparer : IFileComparer
     {
-        private IHashStrategy hashStrategy;
+        private readonly IComparisonStrategy comparisonStrategy;
 
-        public FileComparer(IHashStrategy hashStrategy)
+        public FileComparer(IComparisonStrategy comparisonStrategy)
         {
-            this.hashStrategy = hashStrategy;
+            this.comparisonStrategy = comparisonStrategy;
         }
 
         public FileComparisonResult Compare(IFileSystemFile source, IFileSystemFile destination)
         {
-            if (source.Size != destination.Size)
-            {
-                return FileComparisonResult.Differ;
-            }
-
-            return source.CompareWith(destination, this.hashStrategy);
+            return comparisonStrategy.Compare(source, destination);
         }
     }
 }

@@ -4,10 +4,10 @@ namespace AssemblyBuddy.Interfaces
 
     public interface IFileSystemFile
     {
+        IFileEntry FileEntry { get;  }
+
         ulong Size { get; }
 
         Stream GetStream();
-
-        FileComparisonResult CompareWith(IFileSystemFile other, IHashStrategy hashStrategy);
     }
 }
