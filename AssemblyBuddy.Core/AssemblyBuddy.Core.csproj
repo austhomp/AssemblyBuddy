@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="DefaultComparisonStrategy.cs" />
     <Compile Include="FileComparer.cs" />
+    <Compile Include="FileSystem.cs" />
+    <Compile Include="FileSystemFile.cs" />
     <Compile Include="FolderComparer.cs" />
     <Compile Include="UpdatedAssemblyFinder.cs" />
     <Compile Include="FileEntry.cs" />

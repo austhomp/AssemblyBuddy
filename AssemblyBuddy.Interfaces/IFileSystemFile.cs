@@ -6,7 +6,7 @@ namespace AssemblyBuddy.Interfaces
     {
         IFileEntry FileEntry { get;  }
 
-        ulong Size { get; }
+        long? Size { get; }
 
         Stream GetStream();
     }
