@@ -1,8 +1,10 @@
 ﻿<Window x:Class="AssemblyBuddy.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AssemblyBuddy.ViewModel"
         Title="Assembly Buddy" Height="350" Width="525" WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <vm:MainViewModel x:Key="MainViewModel" />
         <Style x:Key="LabelStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -14,7 +16,7 @@
             <Setter Property="Margin" Value="8" />
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid DataContext="{Binding Source={StaticResource MainViewModel}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -25,11 +27,11 @@
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <TextBlock Style="{StaticResource LabelStyle}" Text="Source" Grid.Column="0" Grid.Row="0" />
-        <TextBox Style="{StaticResource TextInputStyle}" Grid.Column="1" Grid.Row="0" ToolTip="The directories where the new assemblies are located" />
-        <TextBlock Style="{StaticResource LabelStyle}" Text="Target" Grid.Column="0" Grid.Row="1" />
-        <TextBox Style="{StaticResource TextInputStyle}" Grid.Column="1" Grid.Row="1" ToolTip="The directory from which the assemblies are referenced (ex: References, Assemblies, etc.)" />
+        <TextBox Style="{StaticResource TextInputStyle}" Text="{Binding SourcePath}" Grid.Column="1" Grid.Row="0" ToolTip="The directories where the new assemblies are located" />
+        <TextBlock Style="{StaticResource LabelStyle}" Text="Destination" Grid.Column="0" Grid.Row="1" />
+        <TextBox Style="{StaticResource TextInputStyle}" Text="{Binding DestinationPath}" Grid.Column="1" Grid.Row="1" ToolTip="The directory from which the assemblies are referenced (ex: References, Assemblies, etc.)" />
         <TextBlock Style="{StaticResource LabelStyle}" Text="Assemblies to update" Grid.Column="0" Grid.Row="2" />
-        <ListBox Style="{StaticResource ListOutputStyle}" Grid.Column="1" Grid.Row="2" />
+        <ListBox Style="{StaticResource ListOutputStyle}" ItemsSource="{Binding AssemblyList}"  Grid.Column="1" Grid.Row="2" />
         
     </Grid>
 </Window>
