@@ -17,7 +17,7 @@
             this.fileComparer = fileComparer;
         }
 
-        public List<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination)
+        public IList<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination)
         {
             if (source == null)
             {

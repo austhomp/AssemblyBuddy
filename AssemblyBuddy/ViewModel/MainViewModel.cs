@@ -4,6 +4,9 @@ namespace AssemblyBuddy.ViewModel
 {
     using System.Collections.Generic;
 
+    using AssemblyBuddy.DesignTimeData;
+    using AssemblyBuddy.Interfaces;
+
     /// <summary>
     /// This class contains properties that the main View can data bind to.
     /// <para>
@@ -27,7 +30,7 @@ namespace AssemblyBuddy.ViewModel
             {
                 this.SourcePath = @"Z:\some\source\diectory";
                 this.DestinationPath = @"Z:\some\destination\diectory";
-                this.AssemblyList.Add("entry 1");
+                this.AssemblyList.Add(new FileMatch(new MockFileEntry("test.dll"), new MockFileEntry("test.dll")));
             }
             else
             {
@@ -108,13 +111,13 @@ namespace AssemblyBuddy.ViewModel
         /// </summary>
         public const string AssemblyListPropertyName = "AssemblyList";
 
-        private IList<string> assemblyList = new List<string>();
+        private IList<FileMatch> assemblyList = new List<FileMatch>();
 
         /// <summary>
         /// Gets the AssemblyList property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public IList<string> AssemblyList
+        public IList<FileMatch> AssemblyList
         {
             get
             {

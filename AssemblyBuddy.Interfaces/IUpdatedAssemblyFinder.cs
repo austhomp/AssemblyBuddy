@@ -4,6 +4,6 @@
 
     public interface IUpdatedAssemblyFinder
     {
-        List<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination);
+        IList<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination);
     }
 }
