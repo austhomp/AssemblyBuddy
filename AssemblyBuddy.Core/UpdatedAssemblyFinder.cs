@@ -17,6 +17,11 @@
             this.fileComparer = fileComparer;
         }
 
+        public static UpdatedAssemblyFinder CreateUpdatedAssemblyFinder()
+        {
+            return new UpdatedAssemblyFinder(new FolderComparer(), new FileComparer(new DefaultComparisonStrategy()));
+        }
+
         public IList<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination)
         {
             if (source == null)

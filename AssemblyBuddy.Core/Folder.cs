@@ -3,11 +3,11 @@
     using System.Collections.Generic;
     using AssemblyBuddy.Interfaces;
 
-    internal class Folder : IFolder
+    public class Folder : IFolder
     {
         private readonly string path;
 
-        public Folder(string path)
+        internal Folder(string path)
         {
             this.path = path;
         }

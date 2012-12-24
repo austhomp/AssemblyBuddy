@@ -3,9 +3,13 @@ using GalaSoft.MvvmLight;
 namespace AssemblyBuddy.ViewModel
 {
     using System.Collections.Generic;
+    using System.Windows.Input;
 
+    using AssemblyBuddy.Core;
     using AssemblyBuddy.DesignTimeData;
     using AssemblyBuddy.Interfaces;
+
+    using GalaSoft.MvvmLight.Command;
 
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -37,8 +41,46 @@ namespace AssemblyBuddy.ViewModel
                 // Code runs "for real"
             }
 
+            this.CopyCommand = new RelayCommand(this.PerformCopy, this.CanPerformCopy);
+            this.CompareCommand = new RelayCommand(this.PerformCompare, this.CanPerformCompare);
+
             
         }
+
+        private void PerformCopy()
+        {
+            foreach (var fileMatch in AssemblyList)
+            {
+                System.Diagnostics.Debug.WriteLine("Going to copy {0} to {1}", fileMatch.SourceFile.FilePath, fileMatch.DestinationFile.FilePath);    
+            }
+            
+        }
+
+        private bool CanPerformCopy()
+        {
+            // todo: add more logic here as needed
+            return this.AssemblyList.Count > 0;
+        }
+
+        private void PerformCompare()
+        {
+            var finder = UpdatedAssemblyFinder.CreateUpdatedAssemblyFinder();
+            var assembliesToUpdate = finder.FindUpdatedAssemblies(
+                FileSystem.CreateFileSystem(this.SourcePath),
+                FileSystem.CreateFileSystem(this.DestinationPath));
+
+            this.AssemblyList = assembliesToUpdate;
+        }
+
+        private bool CanPerformCompare()
+        {
+            // todo: add logic for directories existing
+            return !string.IsNullOrWhiteSpace(this.SourcePath) && !string.IsNullOrWhiteSpace(this.DestinationPath);
+        }
+
+        public ICommand CopyCommand { get; private set; }
+        
+        public ICommand CompareCommand { get; private set; }
 
         /// <summary>
         /// The <see cref="SourcePath" /> property's name.
@@ -112,6 +154,8 @@ namespace AssemblyBuddy.ViewModel
         public const string AssemblyListPropertyName = "AssemblyList";
 
         private IList<FileMatch> assemblyList = new List<FileMatch>();
+
+        private IBatchCopier batchCopier;
 
         /// <summary>
         /// Gets the AssemblyList property.

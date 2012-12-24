@@ -2,9 +2,14 @@ namespace AssemblyBuddy.Core
 {
     using AssemblyBuddy.Interfaces;
 
-    class FileSystem : IFileSystem
+    public class FileSystem : IFileSystem
     {
         private readonly IFolder folder;
+
+        public static FileSystem CreateFileSystem(string path)
+        {
+            return new FileSystem(new Folder(path));
+        }
 
         public FileSystem(IFolder folder)
         {

@@ -111,6 +111,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AssemblyBuddy.Core\AssemblyBuddy.Core.csproj">
+      <Project>{89F4992B-0B6D-4AFD-90FC-6BF3B47A06B1}</Project>
+      <Name>AssemblyBuddy.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AssemblyBuddy.Interfaces\AssemblyBuddy.Interfaces.csproj">
       <Project>{A42F2FCC-3C09-4509-9297-380BCE6C5A79}</Project>
       <Name>AssemblyBuddy.Interfaces</Name>

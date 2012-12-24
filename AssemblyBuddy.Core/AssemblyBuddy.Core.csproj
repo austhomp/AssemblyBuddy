@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BatchCopier.cs" />
+    <Compile Include="Copier.cs" />
     <Compile Include="DefaultComparisonStrategy.cs" />
     <Compile Include="FileComparer.cs" />
     <Compile Include="FileSystem.cs" />

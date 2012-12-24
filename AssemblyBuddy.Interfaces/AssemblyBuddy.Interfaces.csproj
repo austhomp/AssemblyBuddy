@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="FileComparisonResult.cs" />
     <Compile Include="FileMatch.cs" />
+    <Compile Include="IBatchCopier.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IFileSystemFile.cs" />
     <Compile Include="IComparisonStrategy.cs" />
