@@ -22,7 +22,7 @@
             return new UpdatedAssemblyFinder(new FolderComparer(), new FileComparer(new DefaultComparisonStrategy()));
         }
 
-        public IList<FileMatch> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination)
+        public List<FileMatchResult> FindUpdatedAssemblies(IFileSystem source, IFileSystem destination)
         {
             if (source == null)
             {
@@ -35,19 +35,18 @@
             }
             
             var potentialMatches = this.folderComparer.FindMatches(source.Folder, destination.Folder);
-            var matches = new List<FileMatch>(potentialMatches.Count);
+            var matchResults = new List<FileMatchResult>(potentialMatches.Count);
             
             foreach (var potentialMatch in potentialMatches)
             {
                 var sourceFile = source.GetFileSystemFile(potentialMatch.SourceFile);
                 var destinationFile = destination.GetFileSystemFile(potentialMatch.DestinationFile);
-                if (FileComparisonResult.Differ == this.fileComparer.Compare(sourceFile, destinationFile))
-                {
-                    matches.Add(new FileMatch(potentialMatch.SourceFile, potentialMatch.DestinationFile));
-                }
+                var fileMatch = new FileMatch(potentialMatch.SourceFile, potentialMatch.DestinationFile);
+                var comparsionResult = this.fileComparer.Compare(sourceFile, destinationFile);
+                matchResults.Add(new FileMatchResult(fileMatch, comparsionResult));
             }
 
-            return matches;
+            return matchResults;
 
         }
     }

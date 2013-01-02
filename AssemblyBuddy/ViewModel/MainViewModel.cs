@@ -34,7 +34,7 @@ namespace AssemblyBuddy.ViewModel
             {
                 this.SourcePath = @"Z:\some\source\diectory";
                 this.DestinationPath = @"Z:\some\destination\diectory";
-                this.AssemblyList.Add(new FileMatch(new MockFileEntry("test.dll"), new MockFileEntry("test.dll")));
+                this.AssemblyList.Add(new FileMatchResult(new FileMatch(new MockFileEntry("test.dll"), new MockFileEntry("test.dll")), FileComparisonResult.Differ));
             }
             else
             {
@@ -51,7 +51,7 @@ namespace AssemblyBuddy.ViewModel
         {
             foreach (var fileMatch in AssemblyList)
             {
-                System.Diagnostics.Debug.WriteLine("Going to copy {0} to {1}", fileMatch.SourceFile.FilePath, fileMatch.DestinationFile.FilePath);    
+                System.Diagnostics.Debug.WriteLine("Going to copy {0} to {1}", fileMatch.Match.SourceFile.FilePath, fileMatch.Match.DestinationFile.FilePath);    
             }
             
         }
@@ -153,7 +153,7 @@ namespace AssemblyBuddy.ViewModel
         /// </summary>
         public const string AssemblyListPropertyName = "AssemblyList";
 
-        private IList<FileMatch> assemblyList = new List<FileMatch>();
+        private List<FileMatchResult> assemblyList = new List<FileMatchResult>();
 
         private IBatchCopier batchCopier;
 
@@ -161,7 +161,7 @@ namespace AssemblyBuddy.ViewModel
         /// Gets the AssemblyList property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public IList<FileMatch> AssemblyList
+        public List<FileMatchResult> AssemblyList
         {
             get
             {

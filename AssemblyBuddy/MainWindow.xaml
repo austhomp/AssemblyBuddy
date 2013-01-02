@@ -21,8 +21,14 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         <DataTemplate x:Key="FileMatchDataTemplate">
-            <Grid>
-                <TextBlock Text="{Binding Path=SourceFile.Filename }" />
+            <Grid HorizontalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=Match.SourceFile.Filename }" Grid.Column="0" />
+                <TextBlock Text="{Binding Path=ComparisonResult }" Grid.Column="2" />
             </Grid>
         </DataTemplate>
     </Window.Resources>

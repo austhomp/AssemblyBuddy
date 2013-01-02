@@ -103,7 +103,7 @@ namespace AssemblyBuddy.Core.Tests
         }
 
         [TestMethod()]
-        public void WhenDestinationAndSourceHaveFilesInCommonThatDoNotDiffer_NoMatchesAreReturned()
+        public void WhenDestinationAndSourceHaveFilesInCommonThatDoNotDiffer_NoDifferingMatchesAreReturned()
         {
             var target = GetUpdatedAssemblyFinder();
 
@@ -122,8 +122,8 @@ namespace AssemblyBuddy.Core.Tests
 
             var destination = GetMockFolder(destinationFiles);
 
-            var result = target.FindUpdatedAssemblies(source, destination);
-            Assert.IsTrue(result.Count == 0);
+            var result = target.FindUpdatedAssemblies(source, destination).Where(x => x.ComparisonResult == FileComparisonResult.Differ);
+            Assert.IsTrue(!result.Any());
         }
 
         [TestMethod()]
@@ -146,9 +146,9 @@ namespace AssemblyBuddy.Core.Tests
 
             var destination = GetMockFolder(destinationFiles);
 
-            var result = target.FindUpdatedAssemblies(source, destination);
+            var result = target.FindUpdatedAssemblies(source, destination).Where(x => x.ComparisonResult == FileComparisonResult.Differ).ToList();
             Assert.IsTrue(result.Count == 1);
-            Assert.AreEqual(sourceFiles[0].Filename, result[0].SourceFile.Filename);
+            Assert.AreEqual(sourceFiles[0].Filename, result[0].Match.SourceFile.Filename);
         }
 
 
