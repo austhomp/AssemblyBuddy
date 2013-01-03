@@ -35,9 +35,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBlock Style="{StaticResource LabelStyle}" Text="Source" Grid.Column="0" Grid.Row="0" />
-        <TextBox Style="{StaticResource TextInputStyle}" Text="{Binding SourcePath}" Grid.Column="1" Grid.Row="0" ToolTip="The directories where the new assemblies are located" />
+        <TextBox Style="{StaticResource TextInputStyle}" Text="{Binding SourcePath, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" ToolTip="The directories where the new assemblies are located" />
         <TextBlock Style="{StaticResource LabelStyle}" Text="Destination" Grid.Column="0" Grid.Row="1" />
-        <TextBox Style="{StaticResource TextInputStyle}" Text="{Binding DestinationPath}" Grid.Column="1" Grid.Row="1" ToolTip="The directory from which the assemblies are referenced (ex: References, Assemblies, etc.)" />
+        <TextBox Style="{StaticResource TextInputStyle}" Text="{Binding DestinationPath, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" ToolTip="The directory from which the assemblies are referenced (ex: References, Assemblies, etc.)" />
         <Button Style="{StaticResource ButtonStyle}" Command="{Binding CompareCommand}" Content="Compare" Grid.Row="2" Grid.Column="1" />
         <TextBlock Style="{StaticResource LabelStyle}" Text="Assemblies to update" Grid.Column="0" Grid.Row="3" />
         <ListView ItemsSource="{Binding AssemblyList}" Grid.Column="1" Grid.Row="3">
