@@ -2,7 +2,7 @@ namespace AssemblyBuddy.Interfaces
 {
     public enum FileComparisonResult
     {
-        Match,
+        Same,
         Differ
     }
 }

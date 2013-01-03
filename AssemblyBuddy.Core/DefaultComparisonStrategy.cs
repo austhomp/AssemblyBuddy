@@ -54,7 +54,7 @@ namespace AssemblyBuddy.Core
                     }
                     while (sourceReadCount > 0);
 
-                    return FileComparisonResult.Match;
+                    return FileComparisonResult.Same;
                 }
             }
         }
