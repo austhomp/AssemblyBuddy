@@ -8,7 +8,7 @@ namespace AssemblyBuddy.Core
     {
         public void CopyFile(IFileEntry source, IFileEntry destination)
         {
-            File.Copy(source.Filename, destination.Filename, true);
+            File.Copy(source.FilePath, destination.FilePath, true);
         }
     }
 }

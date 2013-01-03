@@ -53,7 +53,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding OutputDisplay}" IsReadOnly="True" />
+            <TextBox Text="{Binding OutputDisplay}" IsReadOnly="True" IsTabStop="False" />
             <Button Style="{StaticResource ButtonStyle}" Command="{Binding CopyCommand}" Content="Copy" Grid.Column="1"/>
         </Grid>
         
