@@ -49,7 +49,12 @@
             </ListView.View>
         </ListView>
         <Grid Grid.Row="4" Grid.Column="1">
-            <Button Style="{StaticResource ButtonStyle}" Command="{Binding CopyCommand}" Content="Copy"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Text="{Binding OutputDisplay}" IsReadOnly="True" />
+            <Button Style="{StaticResource ButtonStyle}" Command="{Binding CopyCommand}" Content="Copy" Grid.Column="1"/>
         </Grid>
         
     </Grid>

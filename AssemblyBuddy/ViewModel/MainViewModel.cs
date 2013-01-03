@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 
 namespace AssemblyBuddy.ViewModel
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows.Input;
 
@@ -10,6 +11,8 @@ namespace AssemblyBuddy.ViewModel
     using AssemblyBuddy.Interfaces;
 
     using GalaSoft.MvvmLight.Command;
+
+    using System.Linq;
 
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -49,17 +52,25 @@ namespace AssemblyBuddy.ViewModel
 
         private void PerformCopy()
         {
-            foreach (var fileMatch in AssemblyList)
+            this.OutputDisplay = string.Empty;
+            var copier = BatchCopier.CreateBatchCopier();
+            var filesToCopy = AssemblyList
+                .Where(x => x.ComparisonResult == FileComparisonResult.Differ)
+                .Select(x => new FileMatch(x.Match.SourceFile, x.Match.DestinationFile)).ToList();
+
+            try
             {
-                System.Diagnostics.Debug.WriteLine("Going to copy {0} to {1}", fileMatch.Match.SourceFile.FilePath, fileMatch.Match.DestinationFile.FilePath);    
+                copier.Copy(filesToCopy);
             }
-            
+            catch (Exception e)
+            {
+                this.OutputDisplay = "Exception copying files: " + e.ToString();
+            }
         }
 
         private bool CanPerformCopy()
         {
-            // todo: add more logic here as needed
-            return this.AssemblyList.Count > 0;
+            return this.AssemblyList.Any(x => x.ComparisonResult == FileComparisonResult.Differ);
         }
 
         private void PerformCompare()
@@ -183,5 +194,37 @@ namespace AssemblyBuddy.ViewModel
             }
         }
 
+        /// <summary>
+        /// The <see cref="OutputDisplay" /> property's name.
+        /// </summary>
+        public const string OutputDisplayPropertyName = "OutputDisplay";
+
+        private string outputDisplay = string.Empty;
+
+        /// <summary>
+        /// Gets the OutputDisplay property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public string OutputDisplay
+        {
+            get
+            {
+                return outputDisplay;
+            }
+
+            set
+            {
+                if (outputDisplay == value)
+                {
+                    return;
+                }
+
+                var oldValue = outputDisplay;
+                outputDisplay = value;
+
+                // Update bindings, no broadcast
+                RaisePropertyChanged(OutputDisplayPropertyName);
+            }
+        }
     }
 }
