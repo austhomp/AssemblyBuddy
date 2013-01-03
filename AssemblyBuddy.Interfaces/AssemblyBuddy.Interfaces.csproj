@@ -43,7 +43,9 @@
     <Compile Include="FileComparisonResult.cs" />
     <Compile Include="FileMatch.cs" />
     <Compile Include="FileMatchResult.cs" />
+    <Compile Include="IAfterCopyTask.cs" />
     <Compile Include="IBatchCopier.cs" />
+    <Compile Include="IBeforeCopyTask.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IFileSystemFile.cs" />
     <Compile Include="IComparisonStrategy.cs" />
