@@ -1,12 +1,14 @@
 namespace AssemblyBuddy.Core
 {
+    using System.IO;
+
     using AssemblyBuddy.Interfaces;
 
     internal class Copier : ICopier
     {
         public void CopyFile(IFileEntry source, IFileEntry destination)
         {
-            throw new System.NotImplementedException();
+            File.Copy(source.Filename, destination.Filename, true);
         }
     }
 }
