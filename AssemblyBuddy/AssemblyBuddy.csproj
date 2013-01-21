@@ -119,6 +119,10 @@
       <Project>{A42F2FCC-3C09-4509-9297-380BCE6C5A79}</Project>
       <Name>AssemblyBuddy.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AssemblyBuddy.Plugin.TFS\AssemblyBuddy.Plugin.TFS.csproj">
+      <Project>{2659972b-819e-4398-beb9-6c8ce8fd24b7}</Project>
+      <Name>AssemblyBuddy.Plugin.TFS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

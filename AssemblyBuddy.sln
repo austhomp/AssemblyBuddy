@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBuddy", "AssemblyBuddy\AssemblyBuddy.csproj", "{F23CB254-16E0-4BBF-B5BA-08BD2AE8797B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBuddy.Interfaces", "AssemblyBuddy.Interfaces\AssemblyBuddy.Interfaces.csproj", "{A42F2FCC-3C09-4509-9297-380BCE6C5A79}"
@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{454961
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{058F7CE8-93D9-456D-AEF2-0E4904401EA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyBuddy.Plugin.TFS", "AssemblyBuddy.Plugin.TFS\AssemblyBuddy.Plugin.TFS.csproj", "{2659972B-819E-4398-BEB9-6C8CE8FD24B7}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -88,8 +92,21 @@ Global
 		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{07DE0707-9B08-48B0-8325-EB511728FC57}.Release|x86.ActiveCfg = Release|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2659972B-819E-4398-BEB9-6C8CE8FD24B7} = {058F7CE8-93D9-456D-AEF2-0E4904401EA3}
 	EndGlobalSection
 EndGlobal

@@ -4,18 +4,14 @@ namespace AssemblyBuddy.Core
     using System.Collections.Generic;
 
     using AssemblyBuddy.Interfaces;
+    using System.Linq;
 
     public class BatchCopier : IBatchCopier
     {
-        public static BatchCopier CreateBatchCopier()
-        {
-            return new BatchCopier(new Copier(), new List<IBeforeCopyTask>(), new List<IAfterCopyTask>());
-        }
-
         private readonly ICopier fileCopier;
 
         private readonly List<IBeforeCopyTask> beforeCopyTasks;
-        
+
         private readonly List<IAfterCopyTask> afterCopyTasks;
 
         public BatchCopier(ICopier fileCopier, IEnumerable<IBeforeCopyTask> beforeCopyTasks, IEnumerable<IAfterCopyTask> afterCopyTasks)
@@ -42,19 +38,39 @@ namespace AssemblyBuddy.Core
             this.afterCopyTasks.AddRange(afterCopyTasks);
         }
 
+        public static BatchCopier CreateBatchCopier()
+        {
+            return new BatchCopier(new Copier(), new List<IBeforeCopyTask>(), new List<IAfterCopyTask>());
+        }
+
+        public static BatchCopier CreateBatchCopier(IEnumerable<IBeforeCopyTask> beforeCopyTasks, IEnumerable<IAfterCopyTask> afterCopyTasks)
+        {
+            if (beforeCopyTasks == null)
+            {
+                throw new ArgumentNullException("beforeCopyTasks");
+            }
+
+            if (afterCopyTasks == null)
+            {
+                throw new ArgumentNullException("afterCopyTasks");
+            }
+
+            return new BatchCopier(new Copier(), beforeCopyTasks.ToList(), afterCopyTasks.ToList());
+        }
+
         public void Copy(IEnumerable<FileMatch> fileMatches)
         {
             foreach (var fileMatch in fileMatches)
             {
-                RunBeforeCopyTasks(fileMatch);
+                this.RunBeforeCopyTasks(fileMatch);
                 this.fileCopier.CopyFile(fileMatch.SourceFile, fileMatch.DestinationFile);
-                RunAfterCopyTasks(fileMatch);
+                this.RunAfterCopyTasks(fileMatch);
             }
         }
 
         private void RunBeforeCopyTasks(FileMatch fileMatch)
         {
-            foreach (var beforeCopyTask in beforeCopyTasks)
+            foreach (var beforeCopyTask in this.beforeCopyTasks)
             {
                 beforeCopyTask.RunBeforeCopy(fileMatch);
             }
@@ -62,7 +78,7 @@ namespace AssemblyBuddy.Core
 
         private void RunAfterCopyTasks(FileMatch fileMatch)
         {
-            foreach (var afterCopyTask in afterCopyTasks)
+            foreach (var afterCopyTask in this.afterCopyTasks)
             {
                 afterCopyTask.RunAfterCopy(fileMatch);
             }

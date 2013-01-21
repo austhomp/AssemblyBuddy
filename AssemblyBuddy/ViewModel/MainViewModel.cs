@@ -4,15 +4,13 @@ namespace AssemblyBuddy.ViewModel
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows.Input;
-
     using AssemblyBuddy.Core;
     using AssemblyBuddy.DesignTimeData;
     using AssemblyBuddy.Interfaces;
-
+    using AssemblyBuddy.Plugin.TFS;
     using GalaSoft.MvvmLight.Command;
-
-    using System.Linq;
 
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -46,15 +44,18 @@ namespace AssemblyBuddy.ViewModel
 
             this.CopyCommand = new RelayCommand(this.PerformCopy, this.CanPerformCopy);
             this.CompareCommand = new RelayCommand(this.PerformCompare, this.CanPerformCompare);
+            this.BeforeCopyTasks = new List<IBeforeCopyTask>();
+            this.AfterCopyTasks = new List<IAfterCopyTask>();
 
-            
+            //todo: add full plugin architecture with settings to enable/disable
+            this.BeforeCopyTasks.Add(new CheckOutFromTFSBeforeCopy());
         }
 
         private void PerformCopy()
         {
             this.OutputDisplay = string.Empty;
-            var copier = BatchCopier.CreateBatchCopier();
-            var filesToCopy = AssemblyList
+            var copier = BatchCopier.CreateBatchCopier(this.BeforeCopyTasks, this.AfterCopyTasks);
+            var filesToCopy = this.AssemblyList
                 .Where(x => x.ComparisonResult == FileComparisonResult.Differ)
                 .Select(x => new FileMatch(x.Match.SourceFile, x.Match.DestinationFile)).ToList();
 
@@ -67,6 +68,8 @@ namespace AssemblyBuddy.ViewModel
                 this.OutputDisplay = "Exception copying files: " + e.ToString();
             }
         }
+
+
 
         private bool CanPerformCopy()
         {
@@ -200,6 +203,10 @@ namespace AssemblyBuddy.ViewModel
         public const string OutputDisplayPropertyName = "OutputDisplay";
 
         private string outputDisplay = string.Empty;
+
+        private List<IBeforeCopyTask> BeforeCopyTasks;
+
+        private List<IAfterCopyTask> AfterCopyTasks;
 
         /// <summary>
         /// Gets the OutputDisplay property.
