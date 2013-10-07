@@ -1,9 +1,10 @@
 ﻿namespace AssemblyBuddy.Interfaces
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface IBatchCopier
     {
-        void Copy(IEnumerable<FileMatch> fileMatches);
+        Task Copy(IEnumerable<FileMatch> fileMatches);
     }
 }

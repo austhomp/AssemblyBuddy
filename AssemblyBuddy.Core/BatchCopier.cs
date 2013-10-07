@@ -2,7 +2,7 @@ namespace AssemblyBuddy.Core
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Threading.Tasks;
     using AssemblyBuddy.Interfaces;
     using System.Linq;
 
@@ -58,14 +58,18 @@ namespace AssemblyBuddy.Core
             return new BatchCopier(new Copier(), beforeCopyTasks.ToList(), afterCopyTasks.ToList());
         }
 
-        public void Copy(IEnumerable<FileMatch> fileMatches)
+        public async Task Copy(IEnumerable<FileMatch> fileMatches)
         {
-            foreach (var fileMatch in fileMatches)
-            {
-                this.RunBeforeCopyTasks(fileMatch);
-                this.fileCopier.CopyFile(fileMatch.SourceFile, fileMatch.DestinationFile);
-                this.RunAfterCopyTasks(fileMatch);
-            }
+            await TaskEx.Run(
+                () =>
+                    {
+                        Parallel.ForEach(fileMatches, fileMatch =>
+                        {
+                            this.RunBeforeCopyTasks(fileMatch);
+                            this.fileCopier.CopyFile(fileMatch.SourceFile, fileMatch.DestinationFile);
+                            this.RunAfterCopyTasks(fileMatch);
+                        });
+                    });
         }
 
         private void RunBeforeCopyTasks(FileMatch fileMatch)

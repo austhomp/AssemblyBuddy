@@ -5,11 +5,13 @@ namespace AssemblyBuddy.ViewModel
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Input;
     using AssemblyBuddy.Core;
     using AssemblyBuddy.DesignTimeData;
     using AssemblyBuddy.Interfaces;
     using AssemblyBuddy.Plugin.TFS;
+    using AssemblyBuddy.Properties;
     using GalaSoft.MvvmLight.Command;
 
     /// <summary>
@@ -51,9 +53,10 @@ namespace AssemblyBuddy.ViewModel
             this.BeforeCopyTasks.Add(new CheckOutFromTFSBeforeCopy());
         }
 
-        private void PerformCopy()
+        private async void PerformCopy()
         {
-            this.OutputDisplay = string.Empty;
+            this.isCopyInProgress = true;
+            this.OutputDisplay = Resources.MainViewModel_PerformCopy_Starting_copy;
             var copier = BatchCopier.CreateBatchCopier(this.BeforeCopyTasks, this.AfterCopyTasks);
             var filesToCopy = this.AssemblyList
                 .Where(x => x.ComparisonResult == FileComparisonResult.Differ)
@@ -61,11 +64,19 @@ namespace AssemblyBuddy.ViewModel
 
             try
             {
-                copier.Copy(filesToCopy);
+                await copier.Copy(filesToCopy);
             }
             catch (Exception e)
             {
                 this.OutputDisplay = "Exception copying files: " + e.ToString();
+            }
+            finally
+            {
+                this.isCopyInProgress = false;
+                if (this.OutputDisplay == Resources.MainViewModel_PerformCopy_Starting_copy)
+                {
+                    this.outputDisplay = Resources.MainViewModel_PerformCopy_Copy_complete;
+                }
             }
         }
 
@@ -73,23 +84,35 @@ namespace AssemblyBuddy.ViewModel
 
         private bool CanPerformCopy()
         {
-            return this.AssemblyList.Any(x => x.ComparisonResult == FileComparisonResult.Differ);
+            return !this.isCopyInProgress 
+                && this.AssemblyList.Any(x => x.ComparisonResult == FileComparisonResult.Differ);
         }
 
         private void PerformCompare()
         {
-            var finder = UpdatedAssemblyFinder.CreateUpdatedAssemblyFinder();
-            var assembliesToUpdate = finder.FindUpdatedAssemblies(
-                FileSystem.CreateFileSystem(this.SourcePath),
-                FileSystem.CreateFileSystem(this.DestinationPath));
+            this.isCompareInProgress = true;
+            try
+            {
+                var finder = UpdatedAssemblyFinder.CreateUpdatedAssemblyFinder();
+                var assembliesToUpdate = finder.FindUpdatedAssemblies(
+                    FileSystem.CreateFileSystem(this.SourcePath),
+                    FileSystem.CreateFileSystem(this.DestinationPath));
 
-            this.AssemblyList = assembliesToUpdate;
+                this.AssemblyList = assembliesToUpdate;
+            }
+            finally
+            {
+                this.isCompareInProgress = false;
+            }
         }
 
         private bool CanPerformCompare()
         {
             // todo: add logic for directories existing
-            return !string.IsNullOrWhiteSpace(this.SourcePath) && !string.IsNullOrWhiteSpace(this.DestinationPath);
+            return !this.isCompareInProgress
+                && !this.isCopyInProgress
+                && !string.IsNullOrWhiteSpace(this.SourcePath) 
+                && !string.IsNullOrWhiteSpace(this.DestinationPath);
         }
 
         public ICommand CopyCommand { get; private set; }
@@ -207,6 +230,10 @@ namespace AssemblyBuddy.ViewModel
         private List<IBeforeCopyTask> BeforeCopyTasks;
 
         private List<IAfterCopyTask> AfterCopyTasks;
+
+        private bool isCopyInProgress;
+
+        private bool isCompareInProgress;
 
         /// <summary>
         /// Gets the OutputDisplay property.

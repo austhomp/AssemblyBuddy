@@ -28,7 +28,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" MaxHeight="200" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -53,7 +53,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding OutputDisplay}" IsReadOnly="True" IsTabStop="False" />
+            <TextBox Text="{Binding OutputDisplay}" IsReadOnly="True" IsTabStop="False" VerticalScrollBarVisibility="Auto" Grid.Column="0" />
             <Button Style="{StaticResource ButtonStyle}" Command="{Binding CopyCommand}" Content="Copy" Grid.Column="1"/>
         </Grid>
         

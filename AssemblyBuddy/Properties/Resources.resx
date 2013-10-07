@@ -114,4 +114,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MainViewModel_PerformCopy_Starting_copy" xml:space="preserve">
+    <value>Starting copy</value>
+  </data>
+  <data name="MainViewModel_PerformCopy_Copy_complete" xml:space="preserve">
+    <value>Copy complete</value>
+  </data>
 </root>
