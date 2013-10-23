@@ -120,4 +120,10 @@
   <data name="MainViewModel_PerformCopy_Copy_complete" xml:space="preserve">
     <value>Copy complete</value>
   </data>
+  <data name="MainViewModel_PerformCompare_CompareStarting" xml:space="preserve">
+    <value>Comparing...</value>
+  </data>
+  <data name="MainViewModel_PerformCompare_ChangesDetected" xml:space="preserve">
+    <value>{0} changes detected</value>
+  </data>
 </root>

@@ -68,14 +68,14 @@ namespace AssemblyBuddy.ViewModel
             }
             catch (Exception e)
             {
-                this.OutputDisplay = "Exception copying files: " + e.ToString();
+                this.OutputDisplay = e.Message + Environment.NewLine + Environment.NewLine + e.ToString();
             }
             finally
             {
                 this.isCopyInProgress = false;
                 if (this.OutputDisplay == Resources.MainViewModel_PerformCopy_Starting_copy)
                 {
-                    this.outputDisplay = Resources.MainViewModel_PerformCopy_Copy_complete;
+                    this.OutputDisplay = Resources.MainViewModel_PerformCopy_Copy_complete;
                 }
             }
         }
@@ -91,6 +91,7 @@ namespace AssemblyBuddy.ViewModel
         private void PerformCompare()
         {
             this.isCompareInProgress = true;
+            this.OutputDisplay = Resources.MainViewModel_PerformCompare_CompareStarting;
             try
             {
                 var finder = UpdatedAssemblyFinder.CreateUpdatedAssemblyFinder();
@@ -99,6 +100,11 @@ namespace AssemblyBuddy.ViewModel
                     FileSystem.CreateFileSystem(this.DestinationPath));
 
                 this.AssemblyList = assembliesToUpdate;
+                this.OutputDisplay = string.Format(Resources.MainViewModel_PerformCompare_ChangesDetected, assembliesToUpdate.Count);
+            }
+            catch (Exception e)
+            {
+                this.OutputDisplay = e.Message + Environment.NewLine + Environment.NewLine + e.ToString();
             }
             finally
             {
@@ -108,7 +114,6 @@ namespace AssemblyBuddy.ViewModel
 
         private bool CanPerformCompare()
         {
-            // todo: add logic for directories existing
             return !this.isCompareInProgress
                 && !this.isCopyInProgress
                 && !string.IsNullOrWhiteSpace(this.SourcePath) 
