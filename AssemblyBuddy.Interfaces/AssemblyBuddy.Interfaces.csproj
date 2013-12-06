@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileComparisonResult.cs" />
+    <Compile Include="FileCopyResult.cs" />
     <Compile Include="FileMatch.cs" />
     <Compile Include="FileMatchResult.cs" />
     <Compile Include="IAfterCopyTask.cs" />

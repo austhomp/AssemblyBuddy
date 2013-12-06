@@ -49,7 +49,10 @@ namespace AssemblyBuddy.ViewModel
             this.BeforeCopyTasks = new List<IBeforeCopyTask>();
             this.AfterCopyTasks = new List<IAfterCopyTask>();
 
-            //todo: add full plugin architecture with settings to enable/disable
+            // might want an option to enable/disable this in the future
+            var copyProgressReporter = new CopyProgressReporter(this.AssemblyList);
+            this.BeforeCopyTasks.Add(copyProgressReporter);
+            this.AfterCopyTasks.Add(copyProgressReporter);
             this.BeforeCopyTasks.Add(new CheckOutFromTFSBeforeCopy());
         }
 
@@ -212,13 +215,8 @@ namespace AssemblyBuddy.ViewModel
 
             set
             {
-                if (assemblyList == value)
-                {
-                    return;
-                }
-
-                var oldValue = assemblyList;
-                assemblyList = value;
+                this.AssemblyList.Clear();
+                this.AssemblyList.AddRange(value);
 
                 // Update bindings, no broadcast
                 RaisePropertyChanged(AssemblyListPropertyName);
