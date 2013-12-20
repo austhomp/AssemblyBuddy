@@ -109,8 +109,8 @@ namespace AssemblyBuddy.ViewModel
                     this.AssemblyList.Add(result);
                 }
 
-
-                this.OutputDisplay = string.Format(Resources.MainViewModel_PerformCompare_ChangesDetected, assembliesToUpdate.Count);
+                var assembliesThatDiffer = assembliesToUpdate.Where(x => x.ComparisonResult == FileComparisonResult.Differ);
+                this.OutputDisplay = string.Format(Resources.MainViewModel_PerformCompare_ChangesDetected, assembliesThatDiffer.Count());
             }
             catch (Exception e)
             {
