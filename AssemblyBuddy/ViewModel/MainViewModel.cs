@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 
 namespace AssemblyBuddy.ViewModel
@@ -102,7 +103,13 @@ namespace AssemblyBuddy.ViewModel
                     FileSystem.CreateFileSystem(this.SourcePath),
                     FileSystem.CreateFileSystem(this.DestinationPath));
 
-                this.AssemblyList = assembliesToUpdate;
+                this.AssemblyList.Clear();
+                foreach (var result in assembliesToUpdate)
+                {
+                    this.AssemblyList.Add(result);
+                }
+
+
                 this.OutputDisplay = string.Format(Resources.MainViewModel_PerformCompare_ChangesDetected, assembliesToUpdate.Count);
             }
             catch (Exception e)
@@ -198,7 +205,7 @@ namespace AssemblyBuddy.ViewModel
         /// </summary>
         public const string AssemblyListPropertyName = "AssemblyList";
 
-        private List<FileMatchResult> assemblyList = new List<FileMatchResult>();
+        private ObservableCollection<FileMatchResult> assemblyList = new ObservableCollection<FileMatchResult>();
 
         private IBatchCopier batchCopier;
 
@@ -206,20 +213,11 @@ namespace AssemblyBuddy.ViewModel
         /// Gets the AssemblyList property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public List<FileMatchResult> AssemblyList
+        public ObservableCollection<FileMatchResult> AssemblyList
         {
             get
             {
                 return assemblyList;
-            }
-
-            set
-            {
-                this.AssemblyList.Clear();
-                this.AssemblyList.AddRange(value);
-
-                // Update bindings, no broadcast
-                RaisePropertyChanged(AssemblyListPropertyName);
             }
         }
 

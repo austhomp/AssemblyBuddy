@@ -8,9 +8,9 @@
     {
         private readonly List<FileMatchResult> fileMatches;
 
-        public CopyProgressReporter(List<FileMatchResult> fileMatches)
+        public CopyProgressReporter(IEnumerable<FileMatchResult> fileMatches)
         {
-            this.fileMatches = fileMatches;
+            this.fileMatches = fileMatches.ToList();
         }
 
         public void RunBeforeCopy(FileMatch fileMatch)
