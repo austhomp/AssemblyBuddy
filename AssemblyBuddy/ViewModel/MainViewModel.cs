@@ -42,7 +42,7 @@ namespace AssemblyBuddy.ViewModel
             }
             else
             {
-                // Code runs "for real"
+                ProcessCommandLineArgumentsAtStartup();
             }
 
             this.CopyCommand = new RelayCommand(this.PerformCopy, this.CanPerformCopy);
@@ -55,6 +55,23 @@ namespace AssemblyBuddy.ViewModel
             this.BeforeCopyTasks.Add(copyProgressReporter);
             this.AfterCopyTasks.Add(copyProgressReporter);
             this.BeforeCopyTasks.Add(new CheckOutFromTFSBeforeCopy());
+        }
+
+        private void ProcessCommandLineArgumentsAtStartup()
+        {
+            var startupOptions = new StartupOptions();
+            if (CommandLine.Parser.Default.ParseArguments(Environment.GetCommandLineArgs(), startupOptions))
+            {
+                if (!string.IsNullOrWhiteSpace(startupOptions.SourceDirectory))
+                {
+                    this.SourcePath = startupOptions.SourceDirectory;
+                }
+
+                if (!string.IsNullOrWhiteSpace(startupOptions.DestinationDirectory))
+                {
+                    this.DestinationPath = startupOptions.DestinationDirectory;
+                }
+            }
         }
 
         private async void PerformCopy()
